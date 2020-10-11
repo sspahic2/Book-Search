@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.booksearch.list;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 
-import ba.unsa.etf.rma.booksearch.Book;
 import ba.unsa.etf.rma.booksearch.R;
+import ba.unsa.etf.rma.booksearch.data.Book;
 
 public class BookListAdapter extends ArrayAdapter<Book> {
     private int resource;
-    private TextView elementTitle;
-    private ImageView elementImage;
 
     public BookListAdapter(@NonNull Context context, int resource, ArrayList<Book> items) {
         super(context, resource, items);
@@ -39,27 +40,46 @@ public class BookListAdapter extends ArrayAdapter<Book> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LinearLayout newView;
+        Viewholder holder;
         if(convertView == null) {
             newView = new LinearLayout(getContext());
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
             LayoutInflater li;
             li = (LayoutInflater) getContext().getSystemService(inflater);
+            holder = new Viewholder();
             li.inflate(resource, newView, true);
+
+            holder.elementTitle = newView.findViewById(R.id.inListElementTitle);
+            holder.elementImage = newView.findViewById(R.id.inListElementImage);
+            newView.setTag(holder);
         }
         else {
             newView = (LinearLayout) convertView;
+            holder = (Viewholder) convertView.getTag();
         }
 
         Book book = getItem(position);
-        elementTitle = newView.findViewById(R.id.inListElementTitle);
-        elementImage = newView.findViewById(R.id.inListElementImage);
+        holder.elementTitle.setText(book.getVolumeInfo().getTitle());
 
-        elementTitle.setText(book.getVolumeInfo().getTitle());
+        Glide.with(getContext()).load(book.getVolumeInfo().getImageLink())
+                .placeholder(R.drawable.placeholder_book).error(R.drawable.placeholder_book)
+                .fallback(R.drawable.placeholder_book).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                holder.elementImage.setImageDrawable(resource);
+            }
 
-        Glide.with(getContext()).load(book.getVolumeInfo().getImageLinks())
-                .centerCrop().placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground)
-                .fallback(R.drawable.ic_launcher_background).into(elementImage);
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+            }
+        });
 
         return newView;
+    }
+
+    static class Viewholder {
+        TextView elementTitle;
+        ImageView elementImage;
     }
 }

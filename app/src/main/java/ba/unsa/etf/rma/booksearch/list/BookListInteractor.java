@@ -2,26 +2,25 @@ package ba.unsa.etf.rma.booksearch.list;
 
 import android.os.AsyncTask;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import ba.unsa.etf.rma.booksearch.Book;
+import ba.unsa.etf.rma.booksearch.StreamConverter;
+import ba.unsa.etf.rma.booksearch.data.Book;
+import ba.unsa.etf.rma.booksearch.data.VolumeInfo;
 
 
-public class BookListInteractor extends AsyncTask<String, Integer, Void>{
+public class BookListInteractor extends AsyncTask<String, String,Void>{
 
     private String apiKey = "";
     private ArrayList<Book> books;
@@ -47,19 +46,31 @@ public class BookListInteractor extends AsyncTask<String, Integer, Void>{
     @Override
     protected Void doInBackground(String... strings) {
         String query = null;
+        String authorForSimilarBooks = null;
 
         try {
+            //Practically useless, because for detailed search google uses + as a separator
             query = URLEncoder.encode(strings[0], "utf-8");
+            authorForSimilarBooks = URLEncoder.encode(strings[1], "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            query = "";
+            authorForSimilarBooks = "";
         }
-
-        String url1 = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&maxResults=40";
+        String url1 = null;
+        if(!authorForSimilarBooks.isEmpty()) {
+            url1 = "https://www.googleapis.com/books/v1/volumes?q=" + strings[0]
+                    + "+inauthor:" + strings[1] +"&maxResults=40";
+        }
+        else {
+            url1 = "https://www.googleapis.com/books/v1/volumes?q=" + strings[0] + "&maxResults=40";
+        }
         try {
             URL url = new URL(url1);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            String rezultat = convertStreamToString(in);
+            StreamConverter sc = new StreamConverter();
+            String rezultat = sc.convertStreamToString(in);
             JSONObject jo = new JSONObject(rezultat);
             JSONArray results = jo.getJSONArray("items");
 
@@ -91,26 +102,26 @@ public class BookListInteractor extends AsyncTask<String, Integer, Void>{
                 //What if I want better image links?
                 //Implementing Open Library Covers API
                 //It's too slow for list showing
-                //JSONArray industryIdentifiers = vi.optJSONArray("industryIdentifiers");
-//                if(industryIdentifiers != null) {
-//                    for(int j = 0; j < industryIdentifiers.length(); j++) {
-//                        JSONObject listObject = industryIdentifiers.optJSONObject(j);
-//                        if(listObject.optString("type").equals("ISBN_13")) {
-//                            String isbn = listObject.optString("identifier");
-//                            String urlForCover = "http://covers.openlibrary.org/b/isbn/" + isbn + "-M.jpg";
-//                            volumeInfo.setImageLinks(urlForCover);
-//                        }
-//                    }
-//                }
-               // else {
+                //But I will repurpouse it for viewing later down the line
+                JSONArray industryIdentifiers = vi.optJSONArray("industryIdentifiers");
+                if(industryIdentifiers != null) {
+                    for(int j = 0; j < industryIdentifiers.length(); j++) {
+                        JSONObject listObject = industryIdentifiers.optJSONObject(j);
+                        if(listObject.optString("type").equals("ISBN_13")) {
+                              volumeInfo.setIsbn13(listObject.getString("identifier"));
+                              break;
+                        }
+                    }
+                }
+
                     JSONObject thumbnailUrlObject = vi.optJSONObject("imageLinks");
                     if (thumbnailUrlObject != null && thumbnailUrlObject.has("smallThumbnail")) {
-                        volumeInfo.setImageLinks(thumbnailUrlObject.getString("smallThumbnail"));
+                        volumeInfo.setImageLink(thumbnailUrlObject.getString("smallThumbnail"));
                     } else {
                         //Image not found link
-                        volumeInfo.setImageLinks("https://softsmart.co.za/wp-content/uploads/2018/06/image-not-found-1038x576.jpg");
+                        volumeInfo.setImageLink("https://d1uyjdd2vmpgct.cloudfront.net/public/defaults/default-book-cover.png");
                     }
-               // }
+
                 volumeInfo.setDescription(vi.optString("description"));
                 books.add(new Book(id, volumeInfo));
             }
@@ -118,26 +129,6 @@ public class BookListInteractor extends AsyncTask<String, Integer, Void>{
             e.printStackTrace();
         }
         return null;
-    }
-
-    private String convertStreamToString(InputStream in) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        try {
-            while(((line = reader.readLine()) != null)) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 
 }

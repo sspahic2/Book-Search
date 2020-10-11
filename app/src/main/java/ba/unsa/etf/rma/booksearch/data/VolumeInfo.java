@@ -1,14 +1,25 @@
-package ba.unsa.etf.rma.booksearch.list;
+package ba.unsa.etf.rma.booksearch.data;
 
 import java.util.ArrayList;
 
 public class VolumeInfo {
-    private String title;
-    private ArrayList<String> authors;
-    private String description;
-    private String imageLinks;
-    private String publisher;
+    private String title = "";
+    private ArrayList<String> authors = new ArrayList<>();
+    private String description = "";
+    private String imageLink = "";
+    private String publisher = "";
+    private String isbn13 = "";
+    private String webLink = "";
     private ArrayList<String> categories = new ArrayList<>();
+
+
+    public String getWebLink() {
+        return webLink;
+    }
+
+    public void setWebLink(String webLink) {
+        this.webLink = webLink;
+    }
 
     public String getTitle() {
         return title;
@@ -16,6 +27,14 @@ public class VolumeInfo {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getIsbn13() {
+        return isbn13;
+    }
+
+    public void setIsbn13(String isbn13) {
+        this.isbn13 = isbn13;
     }
 
     public ArrayList<String> getAuthors() {
@@ -57,11 +76,11 @@ public class VolumeInfo {
         this.categories.add(category);
     }
 
-    public String getImageLinks() {
-        return imageLinks;
+    public String getImageLink() {
+        return imageLink;
     }
 
-    public void setImageLinks(String imageLinks) {
-        this.imageLinks = imageLinks;
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 }

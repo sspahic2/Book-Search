@@ -1,53 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailsScrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#3a5a69"
+    android:scrollbars="vertical"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/bookCover"
-        android:layout_width="170dp"
-        android:layout_height="220dp"
-        android:layout_marginStart="205dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="206dp"
-        app:layout_constraintBottom_toTopOf="@+id/categories"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/bookCover"
+            android:layout_width="170dp"
+            android:layout_height="220dp"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="30dp"
+            android:contentDescription="Book Cover"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/authors"
-            android:layout_width="wrap_content"
+            android:background="#7f726a"
+            android:textColor="@color/textColor"
+            android:elevation="8dp"
+            android:padding="5dp"
+            android:text="Authors"
+            android:textIsSelectable="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categories" />
+            app:layout_constraintTop_toBottomOf="@+id/btnDownload" />
 
         <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/authors"
-        tools:layout_editor_absoluteX="16dp" />
+            android:id="@+id/description"
+            android:background="#7f726a"
+            android:padding="5dp"
+            android:text="Description"
+            android:textColor="@color/textColor"
+            android:elevation="8dp"
+            android:textIsSelectable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authors" />
 
-    <TextView
-        android:id="@+id/categories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookCover"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/categories"
+            android:background="#7f726a"
+            android:padding="5dp"
+            android:text="Categories"
+            android:textColor="@color/textColor"
+            android:elevation="8dp"
+            android:textIsSelectable="true"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:background="#7f726a"
+            android:elevation="8dp"
+            android:padding="5dp"
+            android:text="Title"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:layout_width="150dp"
+            android:textIsSelectable="true"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnDownload"
+            style="@android:style/Widget.Material.Light.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="6dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#509AF4"
+            android:text="Check download"
+            app:layout_constraintStart_toEndOf="@+id/bookCover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categories" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/similarList"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

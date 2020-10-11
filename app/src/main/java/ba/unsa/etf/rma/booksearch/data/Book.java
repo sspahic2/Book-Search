@@ -1,15 +1,12 @@
-package ba.unsa.etf.rma.booksearch;
+package ba.unsa.etf.rma.booksearch.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
 
-
-import ba.unsa.etf.rma.booksearch.list.VolumeInfo;
-
 public class Book implements Parcelable {
-    private String id;
+    private String id = "";
     private VolumeInfo volumeInfo;
 
     public Book(String id, VolumeInfo volumeInfo) {
