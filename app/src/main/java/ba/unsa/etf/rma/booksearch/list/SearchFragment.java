@@ -47,7 +47,7 @@ public class SearchFragment extends Fragment implements IBookListView{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.main_fragment_layout, container, false);
+        View fragmentView = inflater.inflate(R.layout.search_fragment, container, false);
         setHasOptionsMenu(true);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
             bookList = fragmentView.findViewById(R.id.search_recycler_view);
@@ -87,7 +87,7 @@ public class SearchFragment extends Fragment implements IBookListView{
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
         EditText text = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        text.setTextColor(getResources().getColor(R.color.lightGreen, requireContext().getTheme()));
+        text.setTextColor(getResources().getColor(R.color.lightBlue, requireContext().getTheme()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

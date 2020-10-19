@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.viewModel.FileViewModel;
 
 public class BrowserFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -38,7 +36,6 @@ public class BrowserFragment extends Fragment {
     private MyRecyclerFileAdapter adapter;
     private List<File> fileList = new ArrayList<>();
     private TextView notFound;
-    private FileViewModel viewModel;
     private SearchView searchView;
     private MenuItem searchItem;
 
@@ -47,7 +44,6 @@ public class BrowserFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.browser_fragment, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(FileViewModel.class);
 
         recyclerView = fragmentView.findViewById(R.id.recycler_browser);
         currentFile = new File("/sdcard/");
@@ -114,7 +110,6 @@ public class BrowserFragment extends Fragment {
     }
 
     private void seeFile(File file) {
-        //viewModel.sendFile(file);
         String name = file.getName();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
         Uri path =FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", file);
@@ -158,7 +153,7 @@ public class BrowserFragment extends Fragment {
         searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
         EditText text = ((EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text));
-        text.setTextColor(getResources().getColor(R.color.lightGreen, requireContext().getTheme()));
+        text.setTextColor(getResources().getColor(R.color.lightBlue, requireContext().getTheme()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

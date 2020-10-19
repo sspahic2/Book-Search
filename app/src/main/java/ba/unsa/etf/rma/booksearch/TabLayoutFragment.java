@@ -43,7 +43,7 @@ public class TabLayoutFragment extends Fragment {
         itemSearch = view.findViewById(R.id.tab_search);
         pageAdapter = new PageAdapter(requireActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
-        requireActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.nightSky));
+        requireActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.nightSkyDark));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

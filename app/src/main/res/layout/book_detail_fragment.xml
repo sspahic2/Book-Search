@@ -4,7 +4,7 @@
     android:id="@+id/detailsScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3a5a69"
+    android:background="@color/darkBlueGreen"
     android:scrollbars="vertical"
     android:fillViewport="true">
 
@@ -19,17 +19,17 @@
             android:layout_height="220dp"
             android:scaleType="fitCenter"
             android:layout_marginTop="30dp"
-            android:contentDescription="Book Cover"
+            android:contentDescription="@string/book_cover"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/authors"
-            android:background="#7f726a"
-            android:textColor="@color/textColor"
+            android:background="@color/lightBrown"
+            android:textColor="@color/textColorGold"
             android:elevation="8dp"
             android:padding="5dp"
-            android:text="Authors"
+            android:text="@string/authors"
             android:textIsSelectable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,10 +42,10 @@
 
         <TextView
             android:id="@+id/description"
-            android:background="#7f726a"
+            android:background="@color/lightBrown"
             android:padding="5dp"
-            android:text="Description"
-            android:textColor="@color/textColor"
+            android:text="@string/description"
+            android:textColor="@color/textColorGold"
             android:elevation="8dp"
             android:textIsSelectable="true"
             android:layout_width="match_parent"
@@ -59,10 +59,10 @@
 
         <TextView
             android:id="@+id/categories"
-            android:background="#7f726a"
+            android:background="@color/lightBrown"
             android:padding="5dp"
-            android:text="Categories"
-            android:textColor="@color/textColor"
+            android:text="@string/categories"
+            android:textColor="@color/textColorGold"
             android:elevation="8dp"
             android:textIsSelectable="true"
             android:layout_width="150dp"
@@ -76,13 +76,13 @@
 
         <TextView
             android:id="@+id/titleText"
-            android:background="#7f726a"
+            android:background="@color/lightBrown"
             android:elevation="8dp"
             android:padding="5dp"
-            android:text="Title"
+            android:text="@string/title"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:textColor="@color/textColor"
+            android:textColor="@color/textColorGold"
             android:layout_width="150dp"
             android:textIsSelectable="true"
             android:layout_height="wrap_content"
@@ -100,8 +100,9 @@
             android:layout_height="wrap_content"
             android:elevation="6dp"
             android:layout_marginTop="30dp"
-            android:backgroundTint="#509AF4"
-            android:text="Check download"
+            android:textColor="@color/textColorGold"
+            android:backgroundTint="@color/nightSkyDark"
+            android:text="@string/check_download"
             app:layout_constraintStart_toEndOf="@+id/bookCover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/categories" />

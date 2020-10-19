@@ -4,4 +4,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mention_in_loading">by Tatiana Kawkaw</string>
+    <string name="loading_text">Loading text</string>
+    <string name="sizeOfFile">size MB</string>
+    <string name="fileName">Name of some file</string>
+    <string name="quoteText">Quote text</string>
+    <string name="noFilesFound">No relevant files found</string>
+    <string name="check_download">Check download</string>
+    <string name="book_cover">Book Cover</string>
+    <string name="authors">Authors</string>
+    <string name="description">Description</string>
+    <string name="categories">Categories</string>
+    <string name="title">Title</string>
 </resources>

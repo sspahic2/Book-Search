@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:titleTextColor="#8ca6b3"
+    app:titleTextColor="@color/lightBlue"
     android:layout_height="wrap_content"
     android:id="@+id/toolbar"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    android:background="#284651"
+    android:background="@color/darkBlueGreen"
     android:elevation="4dp"
     app:layout_scrollFlags="scroll|enterAlways">
 

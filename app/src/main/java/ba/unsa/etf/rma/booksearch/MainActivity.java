@@ -8,20 +8,16 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.browser.BrowserFragment;
 import ba.unsa.etf.rma.booksearch.data.Book;
 import ba.unsa.etf.rma.booksearch.details.DetailsFragment;
 import ba.unsa.etf.rma.booksearch.downloadSearch.DownloadFragment;
-import ba.unsa.etf.rma.booksearch.reader.ReaderFragment;
-import ba.unsa.etf.rma.booksearch.viewModel.FileViewModel;
 import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private SharedViewModel viewModel;
-    private FileViewModel fileViewModel;
     private Toolbar toolbar;
     private int id = 0;
     private TabLayoutFragment tabLayoutFragment;
@@ -31,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        fileViewModel = new ViewModelProvider(this).get(FileViewModel.class);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,19 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     DownloadFragment downloadFragment = new DownloadFragment();
                     downloadFragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, downloadFragment, "Download").addToBackStack(null).commit();
-                }
-            }
-        });
-
-        fileViewModel.getFile().observe(this, new Observer<File>() {
-            @Override
-            public void onChanged(File file) {
-                if(file != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("File", file);
-                    ReaderFragment readerFragment = new ReaderFragment();
-                    readerFragment.setArguments(bundle);
-                    getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, readerFragment, "Reader").addToBackStack(null).commit();
                 }
             }
         });

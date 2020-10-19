@@ -23,11 +23,11 @@
         android:gravity="center_vertical"
         android:layout_marginStart="70dp"
         android:layout_marginEnd="20dp"
-        android:text="Downloads"
+        android:text="@string/fileName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:paddingStart="15dp"
-        android:textColor="@color/textColor"/>
+        android:textColor="@color/textColorGold"/>
 
     <View
         android:layout_width="340dp"
@@ -35,7 +35,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/recycler_file_text"
         app:layout_constraintEnd_toEndOf="@id/recycler_file_text"
-        android:background="#8CA6B3"
+        android:background="@color/lightBlue"
         android:layout_marginStart="85dp"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -43,8 +43,8 @@
         android:id="@+id/text_file_size"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="30.00 MB"
-        android:textColor="#8CA6B3"
+        android:text="@string/sizeOfFile"
+        android:textColor="@color/lightBlue"
         android:gravity="bottom"
         android:layout_marginBottom="3dp"
         app:layout_constraintEnd_toEndOf="@id/recycler_file_text"

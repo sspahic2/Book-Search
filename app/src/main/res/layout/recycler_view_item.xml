@@ -39,6 +39,6 @@
             cardView:layout_constraintBottom_toBottomOf="parent"
             android:padding="3dp"
             tools:text="@tools:sample/full_names"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColorGold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#3a5a69">
+    android:background="@color/darkBlueGreen">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -19,12 +19,12 @@
         android:id="@+id/files_not_found_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No relevant files found"
+        android:text="@string/noFilesFound"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/textColor"/>
+        android:textColor="@color/textColorGold"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
