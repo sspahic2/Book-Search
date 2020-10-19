@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <ImageView
+        android:src="@drawable/placeholder_book"
+        android:layout_width="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/recycler_file_text"
+        android:layout_margin="1dp"
+        android:layout_height="45dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_file_text"
+        android:id="@+id/file_icon"/>
+    <TextView
+        android:id="@+id/recycler_file_text"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:gravity="center_vertical"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="20dp"
+        android:text="Downloads"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingStart="15dp"
+        android:textColor="@color/textColor"/>
+
+    <View
+        android:layout_width="340dp"
+        android:layout_height="0.7dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_file_text"
+        app:layout_constraintEnd_toEndOf="@id/recycler_file_text"
+        android:background="#8CA6B3"
+        android:layout_marginStart="85dp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_file_size"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="30.00 MB"
+        android:textColor="#8CA6B3"
+        android:gravity="bottom"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintEnd_toEndOf="@id/recycler_file_text"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_file_text"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

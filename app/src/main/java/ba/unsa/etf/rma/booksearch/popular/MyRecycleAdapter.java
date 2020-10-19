@@ -58,14 +58,16 @@ public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.This
 
         holder.title.setText(builder.toString());
         Glide.with(holder.image.getContext()).load(book.getVolumeInfo().getImageLink())
-                .placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground)
-                .fallback(R.drawable.ic_launcher_background).into(new CustomTarget<Drawable>() {
+                .placeholder(R.drawable.placeholder_book).error(R.drawable.placeholder_book)
+                .fallback(R.drawable.placeholder_book).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 holder.image.setImageDrawable(resource);
             }
             @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) { }
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                holder.image.setImageDrawable(placeholder);
+            }
         });
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {

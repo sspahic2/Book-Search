@@ -2,6 +2,8 @@ package ba.unsa.etf.rma.booksearch;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +16,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
+import ba.unsa.etf.rma.booksearch.browser.BrowserFragment;
+
+
 public class TabLayoutFragment extends Fragment {
     private PageAdapter pageAdapter;
     private TabLayout tabLayout;
@@ -24,6 +29,7 @@ public class TabLayoutFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -31,17 +37,16 @@ public class TabLayoutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab_layout, container, false);
         viewPager = view.findViewById(R.id.viewPager);
-        setHasOptionsMenu(true);
+        viewPager.setOffscreenPageLimit(10);
         tabLayout = view.findViewById(R.id.tab_layout);
         itemHome = view.findViewById(R.id.tab_home);
         itemSearch = view.findViewById(R.id.tab_search);
-        pageAdapter = new PageAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        pageAdapter = new PageAdapter(requireActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
-        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.nightSky));
+        requireActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.nightSky));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println("////////////////////////////////////////////  Position  " + tab.getPosition());
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -58,5 +63,23 @@ public class TabLayoutFragment extends Fragment {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         return view;
+    }
+
+    public Fragment getSelectedItem() {
+        return pageAdapter.getItem(tabLayout.getSelectedTabPosition());
+    }
+
+    public boolean onBackPressed() {
+        boolean handler = false;
+        if(getSelectedItem() instanceof BrowserFragment) {
+            handler = ((BrowserFragment) getSelectedItem()).onBackPressed();
+        }
+        return handler;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

@@ -121,9 +121,21 @@ public class BookListInteractor extends AsyncTask<String, String,Void>{
                         //Image not found link
                         volumeInfo.setImageLink("https://d1uyjdd2vmpgct.cloudfront.net/public/defaults/default-book-cover.png");
                     }
+                volumeInfo.setWebLink(vi.optString("infoLink"));
 
                 volumeInfo.setDescription(vi.optString("description"));
-                books.add(new Book(id, volumeInfo));
+                //Unnecessary books are being added that don't have the exact name of the author
+                if(!strings[1].isEmpty()) {
+                    for(String s : volumeInfo.getAuthors()) {
+                        if(s.toLowerCase().trim().matches(strings[1].toLowerCase().trim())) {
+                            books.add(new Book(id, volumeInfo));
+                            break;
+                        }
+                    }
+                }
+                else {
+                    books.add(new Book(id, volumeInfo));
+                }
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();

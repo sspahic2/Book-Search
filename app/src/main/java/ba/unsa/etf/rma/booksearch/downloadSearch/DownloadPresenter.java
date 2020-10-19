@@ -24,6 +24,6 @@ public class DownloadPresenter implements IDownloadPresenter, DownloadInteractor
 
     @Override
     public void searchParamaters(ArrayList<String> search) {
-        new DownloadInteractor((DownloadInteractor.OnParamatersFound)this).execute(search);
+        new DownloadInteractor(this).execute(search);
     }
 }

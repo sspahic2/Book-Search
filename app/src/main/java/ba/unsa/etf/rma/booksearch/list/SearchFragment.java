@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.SharedViewModel;
 import ba.unsa.etf.rma.booksearch.data.Book;
 import ba.unsa.etf.rma.booksearch.popular.MyRecycleAdapter;
+import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
 public class SearchFragment extends Fragment implements IBookListView{
     private SharedViewModel sharedViewModel;
@@ -81,9 +82,12 @@ public class SearchFragment extends Fragment implements IBookListView{
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
+        EditText text = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        text.setTextColor(getResources().getColor(R.color.lightGreen, requireContext().getTheme()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

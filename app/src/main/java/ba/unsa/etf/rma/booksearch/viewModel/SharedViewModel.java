@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.booksearch;
+package ba.unsa.etf.rma.booksearch.viewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

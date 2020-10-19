@@ -2,6 +2,8 @@ package ba.unsa.etf.rma.booksearch.popular;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,15 +21,13 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.SharedViewModel;
 import ba.unsa.etf.rma.booksearch.data.Book;
 import ba.unsa.etf.rma.booksearch.data.Quote;
 import ba.unsa.etf.rma.booksearch.list.IBookListView;
 import ba.unsa.etf.rma.booksearch.quote.RandomQuote;
+import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
 public class Popular extends Fragment implements IBookListView {
-    private static String apiKey = "b3d8e25f18mshbe5952006717b25p13ad9bjsnbb47af6b1666";
-    private static String apiHost = "andruxnet-random-famous-quotes.p.rapidapi.com";
     private SharedViewModel sharedViewModel;
     private RecyclerView recyclerView;
     private ImageView loadingImage;
@@ -106,5 +106,11 @@ public class Popular extends Fragment implements IBookListView {
     @Override
     public void notifyDataSetChanged() {
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

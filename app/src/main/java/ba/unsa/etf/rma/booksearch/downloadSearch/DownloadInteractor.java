@@ -33,7 +33,7 @@ public class DownloadInteractor extends AsyncTask<ArrayList<String>, Integer, Vo
     protected Void doInBackground(ArrayList<String>... arrayLists) {
         ArrayList<String> paramaters = arrayLists[0];
         //Web link is at the last place
-        if(!paramaters.get(paramaters.size() - 1).equals("")) {
+        if(!paramaters.get(paramaters.size() - 1).contains("books.google")) {
             this.search = "https://1lib.eu" + paramaters.get(paramaters.size() - 1);
             return null;
         }

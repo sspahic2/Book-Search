@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
@@ -31,9 +33,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.SharedViewModel;
 import ba.unsa.etf.rma.booksearch.data.Quote;
 import ba.unsa.etf.rma.booksearch.quote.RandomQuote;
+import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
@@ -82,7 +84,7 @@ public class DownloadFragment extends Fragment implements IDownloadView {
                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, URLUtil.guessFileName(url, contentDisposition, mimetype));
-                    DownloadManager manager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                    DownloadManager manager = (DownloadManager) requireActivity().getSystemService(DOWNLOAD_SERVICE);
                     manager.enqueue(request);
                 }
                 catch(Exception e) {
@@ -105,7 +107,8 @@ public class DownloadFragment extends Fragment implements IDownloadView {
         this.search = searchDone;
         String[] split = search.split("/");
         //Checking if a book has been found
-        if(split[1].equals("s")) {
+        //So thats https: as 0, "" as 1, 1lib.eu as 2, and s as 3
+        if(split[3].equals("s")) {
             Toast.makeText(getActivity(), "Unable to find book. \nHere is the authors other work", Toast.LENGTH_LONG).show();
         }
         webView.getSettings().setJavaScriptEnabled(true);
@@ -214,4 +217,16 @@ public class DownloadFragment extends Fragment implements IDownloadView {
             return false;
         }
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+    }
 }

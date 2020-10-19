@@ -1,15 +1,17 @@
 package ba.unsa.etf.rma.booksearch.details;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,13 +28,13 @@ import com.bumptech.glide.request.transition.Transition;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.SharedViewModel;
 import ba.unsa.etf.rma.booksearch.data.Book;
 import ba.unsa.etf.rma.booksearch.data.VolumeInfo;
 import ba.unsa.etf.rma.booksearch.list.BookListPresenter;
 import ba.unsa.etf.rma.booksearch.list.IBookListPresenter;
 import ba.unsa.etf.rma.booksearch.list.IBookListView;
 import ba.unsa.etf.rma.booksearch.popular.MyRecycleAdapter;
+import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
 public class DetailsFragment extends Fragment implements IBookListView {
     private SharedViewModel sharedViewModel;
@@ -44,7 +46,6 @@ public class DetailsFragment extends Fragment implements IBookListView {
     private RecyclerView similarBooks;
     private TextView title;
     private Book book;
-    private ScrollView scrollView;
     private MyRecycleAdapter adapter;
     private IBookListPresenter presenter;
 
@@ -71,7 +72,6 @@ public class DetailsFragment extends Fragment implements IBookListView {
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         description = fragmentView.findViewById(R.id.description);
-        scrollView = fragmentView.findViewById(R.id.detailsScrollView);
         authors = fragmentView.findViewById(R.id.authors);
         categories = fragmentView.findViewById(R.id.categories);
         bookCover = fragmentView.findViewById(R.id.bookCover);
@@ -80,8 +80,11 @@ public class DetailsFragment extends Fragment implements IBookListView {
         similarBooks = fragmentView.findViewById(R.id.similarList);
         download.setOnClickListener(dowloadListener);
 
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         similarBooks.setLayoutManager(layoutManager);
+        //The recyclerview's content can now be seen withouth scrolling
+        similarBooks.setNestedScrollingEnabled(false);
 
         if(getArguments() != null) {
             VolumeInfo volumeInfo = new VolumeInfo();
@@ -96,18 +99,6 @@ public class DetailsFragment extends Fragment implements IBookListView {
             book = new Book(getArguments().getString("ID"), volumeInfo);
             initializeFields();
         }
-
-        //Enables to scroll similar books list
-        similarBooks.setOnTouchListener((v, event) -> {
-            scrollView.requestDisallowInterceptTouchEvent(true);
-            int action = event.getActionMasked();
-            switch (action) {
-                case MotionEvent.ACTION_UP:
-                    scrollView.requestDisallowInterceptTouchEvent(false);
-                    break;
-            }
-            return false;
-        });
         return fragmentView;
     }
 
@@ -134,8 +125,10 @@ public class DetailsFragment extends Fragment implements IBookListView {
          else {
              coverImage = "http://covers.openlibrary.org/b/isbn/" + book.getVolumeInfo().getIsbn13() +"-M.jpg?default=false";
         }
+
         Glide.with(getContext()).load(coverImage)
-                .placeholder(R.drawable.placeholder_book).error(Glide.with(getContext()).load(book.getVolumeInfo().getImageLink()))
+                .placeholder(R.drawable.placeholder_book)
+                .error(Glide.with(getContext()).load(book.getVolumeInfo().getImageLink()))
                 .fallback(R.drawable.placeholder_book).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
@@ -196,7 +189,37 @@ public class DetailsFragment extends Fragment implements IBookListView {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.share_menu, menu);
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //Ok I have a share button now
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String link = "";
+                //Test if its from google or b-ok
+                if(book.getVolumeInfo().getWebLink().contains("books.google.com")) {
+                    link = book.getVolumeInfo().getWebLink();
+                }
+                else {
+                    link = "https://1lib.eu" + book.getVolumeInfo().getWebLink();
+                }
+                intent.putExtra(Intent.EXTRA_TEXT, link);
+                startActivity(Intent.createChooser(intent, "Share with"));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

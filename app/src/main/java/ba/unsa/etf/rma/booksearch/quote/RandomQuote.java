@@ -24,10 +24,7 @@ public class RandomQuote {
 
             @Override
             public void onFailure(Call<List<Quote>> call, Throwable t) {
-                quotes = new ArrayList<>();
-                Quote quote = new Quote("One glance at a book and you hear the voice of another person, perhaps someone dead for 1,000 years.To read is to voyage through time.",
-                        "Carl Sagan");
-                quotes.add(quote);
+
             }
         });
     }
@@ -36,7 +33,7 @@ public class RandomQuote {
         return instance;
     }
     public Quote getQuote() {
-        int random = new Random().nextInt(500);
+        int random = new Random().nextInt(800);
         if(quotes == null) {
             quotes = new ArrayList<>();
             Quote quote = new Quote("One glance at a book and you hear the voice of another person, perhaps someone dead for 1,000 years.To read is to voyage through time.",
