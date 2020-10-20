@@ -27,6 +27,10 @@ public class PopularInteractor extends AsyncTask<String, String, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        //When the internet is down
+        if(popularBooks.isEmpty()) {
+            popularBooks.add(new Book("NO RESPONSE", null));
+        }
         caller.onDone(popularBooks);
     }
 
@@ -48,7 +52,7 @@ public class PopularInteractor extends AsyncTask<String, String, Void> {
             StreamConverter sc = new StreamConverter();
             String rezultat = sc.convertStreamToString(in);
             JSONObject jo = new JSONObject(rezultat);
-            JSONArray data = jo.getJSONArray("model");
+            JSONArray data = jo.getJSONArray("data");
             for (int i = 0; i < data.length(); i++) {
                 VolumeInfo volumeInfo = new VolumeInfo();
                 JSONObject b = data.optJSONObject(i);

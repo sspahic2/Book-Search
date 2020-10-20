@@ -16,6 +16,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -26,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ba.unsa.etf.rma.booksearch.R;
@@ -51,7 +54,6 @@ public class BrowserFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.browser_fragment, container, false);
-
         recyclerView = fragmentView.findViewById(R.id.recycler_browser);
         currentFile = new File(PATH);
         notFound = fragmentView.findViewById(R.id.files_not_found_text);
@@ -78,14 +80,22 @@ public class BrowserFragment extends Fragment {
 
     private void addFiles() {
         File[] files = currentFile.listFiles();
+        List<File> dirs = new ArrayList<>();
+        List<File> readables = new ArrayList<>();
         if(files != null) {
             for (File f : files) {
-                if (f.getName().toLowerCase().matches("^.+\\.((pdf)|(epub)|(txt))$") ||
-                        f.isDirectory()) {
-                    fileList.add(f);
+                if (f.getName().toLowerCase().matches("^.+\\.((pdf)|(epub)|(txt))$")) {
+                    readables.add(f);
+                }
+                if(f.isDirectory()) {
+                    dirs.add(f);
                 }
             }
         }
+        Collections.sort(dirs, comparator);
+        Collections.sort(readables, comparator);
+        fileList.addAll(dirs);
+        fileList.addAll(readables);
     }
 
     private void updateDirectory(File file) {
@@ -122,6 +132,9 @@ public class BrowserFragment extends Fragment {
         }
         else if(name.toLowerCase().trim().endsWith(".epub")) {
             intent.setDataAndType(path, "application/epub");
+        }
+        else if(name.toLowerCase().trim().endsWith(".txt")) {
+            intent.setDataAndType(path, "application/txt");
         }
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         try {
@@ -205,4 +218,13 @@ public class BrowserFragment extends Fragment {
         searchItem.collapseActionView();
         searchView.setQuery(query, false);
     }
+
+    private Comparator<File> comparator = new Comparator<File>() {
+        @Override
+        public int compare(File o1, File o2) {
+            long age1 = o1.lastModified();
+            long age2 = o2.lastModified();
+            return Long.compare(age2, age1);
+        }
+    };
 }

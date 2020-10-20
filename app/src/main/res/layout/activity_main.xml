@@ -10,6 +10,20 @@
 
     <include layout="@layout/toolbar"/>
 
+
+    <Button
+        android:id="@+id/refresh_button_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/refresh"
+        style="@android:style/Widget.Material.Light.Button.Small"
+        android:textColor="@color/textColorGold"
+        android:backgroundTint="@color/nightSkyDark"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

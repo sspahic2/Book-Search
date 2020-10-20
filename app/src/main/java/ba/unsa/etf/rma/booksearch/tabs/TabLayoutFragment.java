@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.booksearch;
+package ba.unsa.etf.rma.booksearch.tabs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,13 +7,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+
+import ba.unsa.etf.rma.booksearch.R;
 import ba.unsa.etf.rma.booksearch.browser.BrowserFragment;
 
 

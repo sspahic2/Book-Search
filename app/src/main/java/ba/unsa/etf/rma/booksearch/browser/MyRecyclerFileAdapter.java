@@ -8,12 +8,15 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -89,7 +92,28 @@ public class MyRecyclerFileAdapter extends RecyclerView.Adapter<MyRecyclerFileAd
     @Override
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
         File file = files.get(position);
-        holder.fileName.setText(file.getName());
+        StringBuilder builder = new StringBuilder();
+        String name;
+        for(int i = 0; i < file.getName().length(); i++) {
+            name = file.getName();
+            if(i < 27) {
+                builder.append(name.charAt(i));
+            }
+            else {
+                builder.append("...");
+                if(name.toLowerCase().endsWith(".pdf")) {
+                    builder.append(".pdf");
+                }
+                else if(name.toLowerCase().endsWith(".epub")) {
+                    builder.append(".epub");
+                }
+                else if(name.toLowerCase().endsWith(".txt")) {
+                    builder.append(".txt");
+                }
+                break;
+            }
+        }
+        holder.fileName.setText(builder.toString());
         String text;
         int image;
         if(file.isDirectory()) {
@@ -160,7 +184,6 @@ public class MyRecyclerFileAdapter extends RecyclerView.Adapter<MyRecyclerFileAd
     }
 
     public int getFilteredCount() {
-        System.out.println("//////////////////////////////////////////////  " + filteredCount);
         return filteredCount;
     }
 }

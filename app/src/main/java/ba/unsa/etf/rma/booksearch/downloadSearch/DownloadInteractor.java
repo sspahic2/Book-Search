@@ -1,9 +1,11 @@
 package ba.unsa.etf.rma.booksearch.downloadSearch;
 
 import android.os.AsyncTask;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +55,7 @@ public class DownloadInteractor extends AsyncTask<ArrayList<String>, Integer, Vo
                 StreamConverter sc = new StreamConverter();
                 String query = sc.convertStreamToString(in);
                 JSONObject jo = new JSONObject(query);
-                JSONArray results = jo.getJSONArray("model");
+                JSONArray results = jo.getJSONArray("data");
                 //A list of all the books the api is getting back
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject book = results.getJSONObject(i);
@@ -100,6 +102,9 @@ public class DownloadInteractor extends AsyncTask<ArrayList<String>, Integer, Vo
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        if(this.search == null) {
+            this.search = "https://1lib.eu/book/4457273/9ca2b3";
+        }
         caller.done(this.search);
     }
 }

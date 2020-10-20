@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.booksearch;
+package ba.unsa.etf.rma.booksearch.tabs;
 
 import android.content.Context;
 
@@ -8,8 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import ba.unsa.etf.rma.booksearch.browser.BrowserFragment;
-import ba.unsa.etf.rma.booksearch.search.SearchFragment;
 import ba.unsa.etf.rma.booksearch.popular.Popular;
+import ba.unsa.etf.rma.booksearch.search.SearchFragment;
 
 public class PageAdapter extends FragmentPagerAdapter {
     private int numberOfTabs;

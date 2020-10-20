@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,8 +27,8 @@ import java.util.ArrayList;
 import ba.unsa.etf.rma.booksearch.R;
 import ba.unsa.etf.rma.booksearch.model.Book;
 import ba.unsa.etf.rma.booksearch.model.Quote;
-import ba.unsa.etf.rma.booksearch.search.IBookListView;
 import ba.unsa.etf.rma.booksearch.quote.RandomQuote;
+import ba.unsa.etf.rma.booksearch.search.IBookListView;
 import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
 public class Popular extends Fragment implements IBookListView {
@@ -39,6 +40,11 @@ public class Popular extends Fragment implements IBookListView {
     private IPopularPresenter popularPresenter;
     private RandomQuote randomQuote;
     private Context context;
+    private Button refresh;
+    private View.OnClickListener refreshListener = v -> {
+        getPopularPresenter().searchPopularBooks();
+        refresh.setVisibility(View.GONE);
+    };
 
     public Popular(Context context) {
         this.context = context;
@@ -46,7 +52,7 @@ public class Popular extends Fragment implements IBookListView {
 
     private IPopularPresenter getPopularPresenter() {
         if(popularPresenter == null) {
-            popularPresenter = new PopularPresenter(getContext(), this);
+            popularPresenter = new PopularPresenter(context, this);
         }
         return  popularPresenter;
     }
@@ -54,25 +60,30 @@ public class Popular extends Fragment implements IBookListView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.popular_books, container, false);
-            recyclerView = fragmentView.findViewById(R.id.recycler_view);
-            loadingImage = fragmentView.findViewById(R.id.loading_image);
-            loadingText = fragmentView.findViewById(R.id.loading_text);
-            sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
+        recyclerView = fragmentView.findViewById(R.id.recycler_view);
+        loadingImage = fragmentView.findViewById(R.id.loading_image);
+        loadingText = fragmentView.findViewById(R.id.loading_text);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        refresh = fragmentView.findViewById(R.id.refresh_button);
+        refresh.setOnClickListener(refreshListener);
+        refresh.setVisibility(View.GONE);
         //Show animation and quote while loading
         randomQuote = RandomQuote.getInstance();
         Quote quote = randomQuote.getQuote();
         loadingText.setText("\"" +quote.getQuote() + "\" \n - " + quote.getAuthor());
 
-            getPopularPresenter().searchPopularBooks();
+        getPopularPresenter().searchPopularBooks();
+        loadLoading();
 
-            loadingText.setVisibility(View.VISIBLE);
-            loadingImage.setVisibility(View.VISIBLE);
-            Glide.with(context).load(R.drawable.book_page_flip).fitCenter().into(loadingImage);
-
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-            recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
         return fragmentView;
+    }
+
+    private void loadLoading() {
+        loadingText.setVisibility(View.VISIBLE);
+        Glide.with(context).load(R.drawable.book_page_flip).into(loadingImage);
+        loadingImage.setVisibility(View.VISIBLE);
     }
 
     private void runLayoutAnimation() {
@@ -86,12 +97,16 @@ public class Popular extends Fragment implements IBookListView {
     public void setBooks(ArrayList<Book> items) {
         if(items.size() > 0 && items.get(0).getId().trim().toLowerCase().equals("no response")) {
             //TODO Napravi pop up da ponovo pokusa
+            refresh.setVisibility(View.VISIBLE);
+            loadingText.setText("Oops something went wrong. \n Please try to refresh.");
         }
         else {
             adapter = new MyRecycleAdapter(items);
             //Hide animation and quote after list is loaded
             loadingImage.setVisibility(View.GONE);
             loadingText.setVisibility(View.GONE);
+            refresh.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
             runLayoutAnimation();
 
             //It wont be clicked until its loaded anyways
@@ -110,11 +125,19 @@ public class Popular extends Fragment implements IBookListView {
     }
 
     @Override
-    public void recieveBook(Book book) {
-        sharedViewModel.sendBook(book);
-        loadingImage.setVisibility(View.GONE);
-        loadingText.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+    public void receiveBook(Book book) {
+        if(book == null) {
+            refresh.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            loadLoading();
+            loadingText.setText("Oops something went wrong. \n Please try to refresh.");
+        }
+        else {
+            sharedViewModel.sendBook(book);
+            loadingImage.setVisibility(View.GONE);
+            loadingText.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

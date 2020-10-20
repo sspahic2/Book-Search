@@ -50,7 +50,7 @@ public class BookSearchInteractor extends AsyncTask<String, String, Void> {
             String rezultat = sc.convertStreamToString(in);
             JSONObject jsonObject = new JSONObject(rezultat);
 
-            JSONObject data = jsonObject.getJSONObject("model");
+            JSONObject data = jsonObject.getJSONObject("data");
             VolumeInfo volumeInfo = new VolumeInfo();
 
             volumeInfo.setTitle(data.optString("name"));
@@ -70,7 +70,7 @@ public class BookSearchInteractor extends AsyncTask<String, String, Void> {
             in = new BufferedInputStream(urlConnection.getInputStream());
             rezultat = sc.convertStreamToString(in);
             jsonObject = new JSONObject(rezultat);
-            JSONArray dataSet = jsonObject.getJSONArray("model");
+            JSONArray dataSet = jsonObject.getJSONArray("data");
 
             String s = bookID.replace("?dsource=mostpopular", "");
             for(int i = 0; i < dataSet.length(); i++) {
