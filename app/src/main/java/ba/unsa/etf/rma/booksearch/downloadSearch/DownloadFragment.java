@@ -21,10 +21,13 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
+
 import ba.unsa.etf.rma.booksearch.R;
 import ba.unsa.etf.rma.booksearch.model.Quote;
 import ba.unsa.etf.rma.booksearch.quote.RandomQuote;
@@ -38,6 +41,7 @@ public class DownloadFragment extends Fragment implements IDownloadView {
     private TextView textView;
     private IDownloadPresenter presenter;
     private Context context;
+    private boolean loadedOnce = false;
 
     public IDownloadPresenter getPresenter() {
         if(presenter == null) {
@@ -132,15 +136,18 @@ public class DownloadFragment extends Fragment implements IDownloadView {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if(newProgress < 90) {
-                    imageView.setVisibility(View.VISIBLE);
-                    textView.setVisibility(View.VISIBLE);
-                }
+                if(!loadedOnce) {
+                    if (newProgress < 90) {
+                        imageView.setVisibility(View.VISIBLE);
+                        textView.setVisibility(View.VISIBLE);
+                    }
 
-                if(newProgress >= 90) {
-                    imageView.setVisibility(View.GONE);
-                    textView.setVisibility(View.GONE);
-                    webView.setVisibility(View.VISIBLE);
+                    if (newProgress >= 90) {
+                        imageView.setVisibility(View.GONE);
+                        textView.setVisibility(View.GONE);
+                        webView.setVisibility(View.VISIBLE);
+                        loadedOnce = true;
+                    }
                 }
             }
 

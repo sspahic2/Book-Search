@@ -67,9 +67,7 @@
             android:textIsSelectable="true"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bookCover"
             app:layout_constraintTop_toBottomOf="@+id/titleText" />
@@ -86,9 +84,7 @@
             android:layout_width="150dp"
             android:textIsSelectable="true"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bookCover"
             app:layout_constraintTop_toTopOf="parent" />
@@ -96,10 +92,10 @@
         <Button
             android:id="@+id/btnDownload"
             style="@android:style/Widget.Material.Light.Button.Small"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:elevation="6dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:textColor="@color/textColorGold"
             android:backgroundTint="@color/nightSkyDark"
             android:text="@string/check_download"
