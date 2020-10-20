@@ -1,21 +1,19 @@
 package ba.unsa.etf.rma.booksearch;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
-
 import ba.unsa.etf.rma.booksearch.browser.BrowserFragment;
 
 
@@ -25,7 +23,12 @@ public class TabLayoutFragment extends Fragment {
     private TabItem itemHome;
     private TabItem itemSearch;
     private ViewPager viewPager;
+    private Context context;
 
+
+    public TabLayoutFragment(Context context) {
+        this.context = context;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,7 @@ public class TabLayoutFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         itemHome = view.findViewById(R.id.tab_home);
         itemSearch = view.findViewById(R.id.tab_search);
-        pageAdapter = new PageAdapter(requireActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        pageAdapter = new PageAdapter(requireActivity().getSupportFragmentManager(), tabLayout.getTabCount(), context);
         viewPager.setAdapter(pageAdapter);
         requireActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.nightSkyDark));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

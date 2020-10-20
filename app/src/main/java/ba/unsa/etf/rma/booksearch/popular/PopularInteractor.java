@@ -14,8 +14,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.StreamConverter;
-import ba.unsa.etf.rma.booksearch.data.Book;
-import ba.unsa.etf.rma.booksearch.data.VolumeInfo;
+import ba.unsa.etf.rma.booksearch.model.Book;
+import ba.unsa.etf.rma.booksearch.model.VolumeInfo;
 
 public class PopularInteractor extends AsyncTask<String, String, Void> {
     private PopularsFound caller;
@@ -31,12 +31,12 @@ public class PopularInteractor extends AsyncTask<String, String, Void> {
     }
 
     public interface PopularsFound {
-        public void onDone(ArrayList<Book> items);
+        void onDone(ArrayList<Book> items);
     }
     @Override
     protected Void doInBackground(String... strings) {
         String url1 = "https://b-ok.herokuapp.com/";
-        URL url = null;
+        URL url;
         try {
             url = new URL(url1);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -48,7 +48,7 @@ public class PopularInteractor extends AsyncTask<String, String, Void> {
             StreamConverter sc = new StreamConverter();
             String rezultat = sc.convertStreamToString(in);
             JSONObject jo = new JSONObject(rezultat);
-            JSONArray data = jo.getJSONArray("data");
+            JSONArray data = jo.getJSONArray("model");
             for (int i = 0; i < data.length(); i++) {
                 VolumeInfo volumeInfo = new VolumeInfo();
                 JSONObject b = data.optJSONObject(i);

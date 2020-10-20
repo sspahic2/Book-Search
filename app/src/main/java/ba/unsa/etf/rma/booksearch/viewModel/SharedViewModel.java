@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-import ba.unsa.etf.rma.booksearch.data.Book;
+import ba.unsa.etf.rma.booksearch.model.Book;
 
 public class SharedViewModel extends ViewModel {
     private MutableLiveData<Book> book = new MutableLiveData<>();

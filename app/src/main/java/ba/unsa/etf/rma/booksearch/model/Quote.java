@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.booksearch.data;
+package ba.unsa.etf.rma.booksearch.model;
 
 public class Quote {
     private String text;

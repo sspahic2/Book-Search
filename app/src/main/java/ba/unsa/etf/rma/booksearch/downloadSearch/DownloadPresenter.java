@@ -1,7 +1,6 @@
 package ba.unsa.etf.rma.booksearch.downloadSearch;
 
 import android.content.Context;
-
 import java.util.ArrayList;
 
 

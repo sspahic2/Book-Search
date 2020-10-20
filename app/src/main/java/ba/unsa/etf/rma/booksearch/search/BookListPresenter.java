@@ -1,10 +1,10 @@
-package ba.unsa.etf.rma.booksearch.list;
+package ba.unsa.etf.rma.booksearch.search;
 
 import android.content.Context;
 
 import java.util.ArrayList;
 
-import ba.unsa.etf.rma.booksearch.data.Book;
+import ba.unsa.etf.rma.booksearch.model.Book;
 
 public class BookListPresenter implements IBookListPresenter, BookListInteractor.OnBookSearchDone {
     private IBookListView view;
@@ -23,7 +23,7 @@ public class BookListPresenter implements IBookListPresenter, BookListInteractor
 
     @Override
     public void searchBooks(String query, String author) {
-        new BookListInteractor((BookListInteractor.OnBookSearchDone) this).execute(query, author);
+        new BookListInteractor(this).execute(query, author);
     }
 
     @Override

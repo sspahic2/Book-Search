@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.booksearch.list;
+package ba.unsa.etf.rma.booksearch.search;
 
 public interface IBookListPresenter {
     void refrestBooks();

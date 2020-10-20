@@ -1,11 +1,9 @@
 package ba.unsa.etf.rma.booksearch.downloadSearch;
 
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +53,7 @@ public class DownloadInteractor extends AsyncTask<ArrayList<String>, Integer, Vo
                 StreamConverter sc = new StreamConverter();
                 String query = sc.convertStreamToString(in);
                 JSONObject jo = new JSONObject(query);
-                JSONArray results = jo.getJSONArray("data");
+                JSONArray results = jo.getJSONArray("model");
                 //A list of all the books the api is getting back
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject book = results.getJSONObject(i);

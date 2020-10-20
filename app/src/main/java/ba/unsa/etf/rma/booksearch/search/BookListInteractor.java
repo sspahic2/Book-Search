@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.booksearch.list;
+package ba.unsa.etf.rma.booksearch.search;
 
 import android.os.AsyncTask;
 
@@ -16,18 +16,17 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.StreamConverter;
-import ba.unsa.etf.rma.booksearch.data.Book;
-import ba.unsa.etf.rma.booksearch.data.VolumeInfo;
+import ba.unsa.etf.rma.booksearch.model.Book;
+import ba.unsa.etf.rma.booksearch.model.VolumeInfo;
 
 
 public class BookListInteractor extends AsyncTask<String, String,Void>{
 
-    private String apiKey = "";
     private ArrayList<Book> books;
     private OnBookSearchDone caller;
 
     public interface OnBookSearchDone {
-        public void onDone(ArrayList<Book> items);
+        void onDone(ArrayList<Book> items);
     }
 
 
@@ -45,19 +44,16 @@ public class BookListInteractor extends AsyncTask<String, String,Void>{
 
     @Override
     protected Void doInBackground(String... strings) {
-        String query = null;
-        String authorForSimilarBooks = null;
+        String authorForSimilarBooks;
 
         try {
             //Practically useless, because for detailed search google uses + as a separator
-            query = URLEncoder.encode(strings[0], "utf-8");
             authorForSimilarBooks = URLEncoder.encode(strings[1], "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            query = "";
             authorForSimilarBooks = "";
         }
-        String url1 = null;
+        String url1 ;
         if(!authorForSimilarBooks.isEmpty()) {
             url1 = "https://www.googleapis.com/books/v1/volumes?q=" + strings[0]
                     + "+inauthor:" + strings[1] +"&maxResults=40";

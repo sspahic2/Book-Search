@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ba.unsa.etf.rma.booksearch.StreamConverter;
-import ba.unsa.etf.rma.booksearch.data.Book;
-import ba.unsa.etf.rma.booksearch.data.VolumeInfo;
+import ba.unsa.etf.rma.booksearch.model.Book;
+import ba.unsa.etf.rma.booksearch.model.VolumeInfo;
 
 public class BookSearchInteractor extends AsyncTask<String, String, Void> {
     private Book book;
@@ -24,7 +24,7 @@ public class BookSearchInteractor extends AsyncTask<String, String, Void> {
 
 
     public interface BookFound {
-        public void onFound(Book book);
+        void onFound(Book book);
     }
 
     public BookSearchInteractor(BookFound bookFound) {
@@ -41,7 +41,7 @@ public class BookSearchInteractor extends AsyncTask<String, String, Void> {
     protected Void doInBackground(String... strings) {
         String bookID = strings[0];
         String urlTemp = "https://b-ok.herokuapp.com/book/single" + bookID;
-        URL url = null;
+        URL url;
         try {
             url = new URL(urlTemp);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -50,7 +50,7 @@ public class BookSearchInteractor extends AsyncTask<String, String, Void> {
             String rezultat = sc.convertStreamToString(in);
             JSONObject jsonObject = new JSONObject(rezultat);
 
-            JSONObject data = jsonObject.getJSONObject("data");
+            JSONObject data = jsonObject.getJSONObject("model");
             VolumeInfo volumeInfo = new VolumeInfo();
 
             volumeInfo.setTitle(data.optString("name"));
@@ -70,7 +70,7 @@ public class BookSearchInteractor extends AsyncTask<String, String, Void> {
             in = new BufferedInputStream(urlConnection.getInputStream());
             rezultat = sc.convertStreamToString(in);
             jsonObject = new JSONObject(rezultat);
-            JSONArray dataSet = jsonObject.getJSONArray("data");
+            JSONArray dataSet = jsonObject.getJSONArray("model");
 
             String s = bookID.replace("?dsource=mostpopular", "");
             for(int i = 0; i < dataSet.length(); i++) {

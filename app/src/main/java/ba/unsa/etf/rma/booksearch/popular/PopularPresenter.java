@@ -4,8 +4,8 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import ba.unsa.etf.rma.booksearch.data.Book;
-import ba.unsa.etf.rma.booksearch.list.IBookListView;
+import ba.unsa.etf.rma.booksearch.model.Book;
+import ba.unsa.etf.rma.booksearch.search.IBookListView;
 
 public class PopularPresenter implements PopularInteractor.PopularsFound, IPopularPresenter, BookSearchInteractor.BookFound{
 
@@ -24,16 +24,16 @@ public class PopularPresenter implements PopularInteractor.PopularsFound, IPopul
     }
 
     public void searchPopularBooks() {
-        new PopularInteractor((PopularInteractor.PopularsFound) this).execute();
+        new PopularInteractor(this).execute();
     }
 
     @Override
     public void searchFromDifferentApi(String id) {
-        new BookSearchInteractor((BookSearchInteractor.BookFound) this).execute(id);
+        new BookSearchInteractor(this).execute(id);
     }
 
     @Override
     public void onFound(Book book) {
-        view.recieveBook(book);
+        view.receiveBook(book);
     }
 }

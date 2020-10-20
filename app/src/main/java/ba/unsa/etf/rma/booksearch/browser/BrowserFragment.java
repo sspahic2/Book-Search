@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.booksearch.browser;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -38,6 +38,13 @@ public class BrowserFragment extends Fragment {
     private TextView notFound;
     private SearchView searchView;
     private MenuItem searchItem;
+    private final String PATH = "/storage/emulated/0";
+    private int startingSize;
+    private Context context;
+
+    public BrowserFragment(Context context) {
+        this.context = context;
+    }
 
 
     @Nullable
@@ -46,25 +53,19 @@ public class BrowserFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.browser_fragment, container, false);
 
         recyclerView = fragmentView.findViewById(R.id.recycler_browser);
-        currentFile = new File("/sdcard/");
+        currentFile = new File(PATH);
         notFound = fragmentView.findViewById(R.id.files_not_found_text);
         notFound.setVisibility(View.GONE);
-
         addFiles();
+        startingSize = fileList.size();
         adapter = new MyRecyclerFileAdapter(fileList);
-        adapter.setOnItemClickListener(new MyRecyclerFileAdapter.OnFileListener() {
-            @Override
-            public void onFileClick(int position) {
-                File file = adapter.getItem(position);
-                if(searchView.isFocused()) {
-                    endSearch("");
-                }
-                if(file.isDirectory()) {
-                    updateDirectory(file);
-                }
-                else {
-                    seeFile(file);
-                }
+        adapter.setOnItemClickListener(position -> {
+            File file = adapter.getItem(position);
+            if(file.isDirectory()) {
+                updateDirectory(file);
+            }
+            else {
+                seeFile(file);
             }
         });
 
@@ -88,6 +89,9 @@ public class BrowserFragment extends Fragment {
     }
 
     private void updateDirectory(File file) {
+        if(searchView.hasFocus()) {
+            endSearch("");
+        }
         currentFile = file;
         fileList.clear();
         addFiles();
@@ -97,7 +101,7 @@ public class BrowserFragment extends Fragment {
     }
 
     private void runLayoutAnimation() {
-        LayoutAnimationController controller =AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_from_right_animation);
+        LayoutAnimationController controller =AnimationUtils.loadLayoutAnimation(context, R.anim.layout_from_right_animation);
         recyclerView.setLayoutAnimation(controller);
         adapter.notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
@@ -112,7 +116,7 @@ public class BrowserFragment extends Fragment {
     private void seeFile(File file) {
         String name = file.getName();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
-        Uri path =FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", file);
+        Uri path = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
         if(name.toLowerCase().trim().endsWith(".pdf")) {
             intent.setDataAndType(path, "application/pdf");
         }
@@ -133,10 +137,18 @@ public class BrowserFragment extends Fragment {
         if(currentFile != null && currentFile.getParent() != null) {
             parent = new File(currentFile.getParent());
         }
-        if(parent != null && !parent.getName().equals("emulated")) {
-            updateDirectory(parent);
-            return true;
+        if(parent != null) {
+            if(!parent.getName().equals("emulated")) {
+                updateDirectory(parent);
+                return true;
+            }
+
+            if(startingSize > fileList.size() && parent.getName().equals("emulated")) {
+                updateDirectory(new File(PATH));
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -152,7 +164,7 @@ public class BrowserFragment extends Fragment {
         inflater.inflate(R.menu.search_menu, menu);
         searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
-        EditText text = ((EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text));
+        EditText text = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         text.setTextColor(getResources().getColor(R.color.lightBlue, requireContext().getTheme()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -165,16 +177,25 @@ public class BrowserFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if(!newText.isEmpty()) {
                     adapter.getFilter().filter(newText);
-                    if(adapter.getFilteredCount() == 0) {
-                        notFound.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        notFound.setVisibility(View.GONE);
-                    }
                     return true;
                 }
                 return false;
             }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+           if(!hasFocus) {
+               endSearch("");
+               if(adapter.getFilteredCount() == 0) {
+                   notFound.setVisibility(View.VISIBLE);
+               }
+               else {
+                   notFound.setVisibility(View.GONE);
+               }
+           }
+           else {
+               notFound.setVisibility(View.GONE);
+           }
         });
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ba.unsa.etf.rma.booksearch.data.Quote;
+import ba.unsa.etf.rma.booksearch.model.Quote;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

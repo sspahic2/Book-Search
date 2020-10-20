@@ -1,5 +1,6 @@
-package ba.unsa.etf.rma.booksearch.list;
+package ba.unsa.etf.rma.booksearch.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -20,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.data.Book;
+import ba.unsa.etf.rma.booksearch.model.Book;
 import ba.unsa.etf.rma.booksearch.popular.MyRecycleAdapter;
 import ba.unsa.etf.rma.booksearch.viewModel.SharedViewModel;
 
@@ -30,6 +33,11 @@ public class SearchFragment extends Fragment implements IBookListView{
     private SearchView searchView;
     private IBookListPresenter iBookListPresenter;
     private MyRecycleAdapter bookListAdapter;
+    private Context context;
+
+    public SearchFragment(Context context) {
+        this.context = context;
+    }
 
     public IBookListPresenter getPresenter() {
             if(iBookListPresenter == null) {
@@ -52,7 +60,7 @@ public class SearchFragment extends Fragment implements IBookListView{
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
             bookList = fragmentView.findViewById(R.id.search_recycler_view);
             bookList.setAdapter(bookListAdapter);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 2);
             bookList.setLayoutManager(layoutManager);
 
         return fragmentView;
@@ -61,18 +69,22 @@ public class SearchFragment extends Fragment implements IBookListView{
     public void setBooks(ArrayList<Book> items) {
         bookListAdapter = new MyRecycleAdapter(items);
 
-        bookListAdapter.setOnItemClickListener(new MyRecycleAdapter.ClickListener<Book>() {
-            @Override
-            public void onItemClick(Book data) {
-                sharedViewModel.sendBook(data);
-            }
-        });
+        bookListAdapter.setOnItemClickListener(data -> sharedViewModel.sendBook(data));
+
+        runLayoutAnimation();
         bookList.setAdapter(bookListAdapter);
     }
 
     @Override
-    public void recieveBook(Book book) {
+    public void receiveBook(Book book) {
         //Do nothing
+    }
+
+    private void runLayoutAnimation() {
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down_animation);
+        bookList.setLayoutAnimation(controller);
+        notifyDataSetChanged();
+        bookList.scheduleLayoutAnimation();
     }
 
     @Override
@@ -87,7 +99,7 @@ public class SearchFragment extends Fragment implements IBookListView{
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
         EditText text = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        text.setTextColor(getResources().getColor(R.color.lightBlue, requireContext().getTheme()));
+        text.setTextColor(getResources().getColor(R.color.lightBlue, context.getTheme()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

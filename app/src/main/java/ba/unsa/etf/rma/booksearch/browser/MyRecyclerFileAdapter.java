@@ -8,15 +8,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -93,16 +90,16 @@ public class MyRecyclerFileAdapter extends RecyclerView.Adapter<MyRecyclerFileAd
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
         File file = files.get(position);
         holder.fileName.setText(file.getName());
-        String text = "";
+        String text;
         int image;
         if(file.isDirectory()) {
             image = R.drawable.ic_baseline_folder_open_24;
             File[] files = file.listFiles();
             if(files != null) {
-                text = String.valueOf(files.length) + " items";
+                text = files.length + " items";
             }
             else {
-                text = String.valueOf(0) + " items";
+                text = 0 + " items";
             }
         }
         else {

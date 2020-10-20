@@ -19,7 +19,7 @@ import com.bumptech.glide.request.transition.Transition;
 import java.util.List;
 
 import ba.unsa.etf.rma.booksearch.R;
-import ba.unsa.etf.rma.booksearch.data.Book;
+import ba.unsa.etf.rma.booksearch.model.Book;
 
 public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.ThisViewHolder> {
     private List<Book> bookList;
@@ -70,12 +70,7 @@ public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.This
             }
         });
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bookListener.onItemClick(book);
-            }
-        });
+        holder.cardView.setOnClickListener(v -> bookListener.onItemClick(book));
     }
 
     @Override

@@ -10,10 +10,10 @@ public class StreamConverter {
     public String convertStreamToString(InputStream in) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder sb = new StringBuilder();
-        String line = null;
+        String line;
         try {
             while(((line = reader.readLine()) != null)) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
