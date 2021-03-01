@@ -89,19 +89,22 @@ public class Popular extends Fragment implements IBookListView {
     private void runLayoutAnimation() {
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_fall_down_animation);
         recyclerView.setLayoutAnimation(controller);
-        notifyDataSetChanged();
+        if(adapter != null) {
+            notifyDataSetChanged();
+        }
         recyclerView.scheduleLayoutAnimation();
     }
 
     @Override
     public void setBooks(ArrayList<Book> items) {
+        adapter = new MyRecycleAdapter(items);
         if(items.size() > 0 && items.get(0).getId().trim().toLowerCase().equals("no response")) {
             //TODO Napravi pop up da ponovo pokusa
             refresh.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
             loadingText.setText("Oops something went wrong. \n Please try to refresh.");
         }
         else {
-            adapter = new MyRecycleAdapter(items);
             //Hide animation and quote after list is loaded
             loadingImage.setVisibility(View.GONE);
             loadingText.setVisibility(View.GONE);
@@ -142,7 +145,8 @@ public class Popular extends Fragment implements IBookListView {
 
     @Override
     public void notifyDataSetChanged() {
-        adapter.notifyDataSetChanged();
+        if(adapter != null)
+            adapter.notifyDataSetChanged();
     }
 
     @Override

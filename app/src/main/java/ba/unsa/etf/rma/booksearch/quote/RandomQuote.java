@@ -19,6 +19,7 @@ public class RandomQuote {
         call.enqueue(new Callback<List<Quote>>() {
             @Override
             public void onResponse(Call<List<Quote>> call, Response<List<Quote>> response) {
+                System.out.println(response.body());
                 quotes = response.body();
             }
 
@@ -40,6 +41,11 @@ public class RandomQuote {
                     "Carl Sagan");
             quotes.add(quote);
             random = 0;
+        }
+
+        //Ako je internet nestao
+        if(quotes.size() <= random) {
+            random=0;
         }
 
         if(quotes.get(random).getAuthor() == null) {
